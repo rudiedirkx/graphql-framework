@@ -1,0 +1,13 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to method format\(\) on an unknown class Carbon\\Carbon\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Schema/DatetimeType.php
+
+		-
+			message: '#^Class Carbon\\Carbon not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Schema/DatetimeType.php

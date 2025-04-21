@@ -1,0 +1,23 @@
+{
+    "name": "rdx/graphql-framework",
+    "description": "GraphQL framework layer on top of webonyx/graphql-php",
+    "type": "library",
+    "require": {
+        "webonyx/graphql-php": "^15.20"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "rdx\\graphql\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rudie Dirkx",
+            "email": "github@hotblocks.nl"
+        }
+    ],
+    "require-dev": {
+        "phpstan/phpstan": "^2.1"
+    }
+}

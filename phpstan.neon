@@ -1,0 +1,13 @@
+includes:
+	- phpstan-baseline.neon
+parameters:
+	level: 6
+	paths:
+		- src/
+	typeAliases:
+		AssocArray: 'array<string, mixed>'
+	checkExplicitMixed: true
+	checkImplicitMixed: true
+	reportMaybes: true
+	treatPhpDocTypesAsCertain: false
+	reportUnmatchedIgnoredErrors: true

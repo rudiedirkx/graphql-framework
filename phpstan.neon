@@ -4,6 +4,8 @@ parameters:
 	level: 6
 	paths:
 		- src/
+	excludePaths:
+		- src/PhpStan/
 	typeAliases:
 		AssocArray: 'array<string, mixed>'
 	checkExplicitMixed: true

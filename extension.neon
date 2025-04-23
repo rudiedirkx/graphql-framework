@@ -1,0 +1,4 @@
+services:
+	-
+		class: rdx\graphql\PhpStan\FieldResolveMethodExtension
+		tags: [phpstan.broker.methodsClassReflectionExtension]

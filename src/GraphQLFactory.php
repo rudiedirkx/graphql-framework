@@ -15,17 +15,29 @@ abstract class GraphQLFactory {
 	 * @param class-string<TType> $class
 	 * @return TType
 	 */
-	static public function create(string $class) {
+	static public function type(string $class) : Type {
 		return self::$types[$class] ??= new $class;
 	}
 
 	/**
+	 * @param class-string<ParentField> $class
+	 * @return AssocArray
+	 */
+	static public function field(string $class) : array {
+		return $class::buildConfig();
+	}
+
+	/**
 	 * @template TType of Type
-	 * @param class-string<TType> $class
+	 * @param TType|class-string<TType> $type
 	 * @return ListOfType<TType>
 	 */
-	static public function listOf(string $class) {
-		return Type::nonNull(Type::listOf(Type::nonNull(self::create($class)))); // @phpstan-ignore return.type
+	static public function listOf(string|Type $type) {
+		if (is_string($type)) {
+			$type = static::type($type);
+		}
+
+		return Type::nonNull(Type::listOf(Type::nonNull($type))); // @phpstan-ignore return.type
 	}
 
 }

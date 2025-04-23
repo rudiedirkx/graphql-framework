@@ -14,17 +14,6 @@ abstract class ParentObjectType extends ObjectType {
 		$config['fields'] = function() {
 			return $this->fields();
 		};
-		$config['argsMapper'] = function(array $args, FieldDefinition $field) {
-			if (count($args)) {
-				$objectType = $field->config['type'];
-				if ($objectType instanceof WrappingType) {
-					$objectType = $objectType->getInnermostType();
-				}
-				assert($objectType instanceof self or $objectType instanceof ParentInterfaceType);
-				return $objectType->args($args);
-			}
-			return $args;
-		};
 		$config['interfaces'] = $this->interfaces();
 		parent::__construct($config);
 	}
@@ -39,14 +28,6 @@ abstract class ParentObjectType extends ObjectType {
 	 */
 	public function interfaces() : array {
 		return [];
-	}
-
-	/**
-	 * @param list<mixed> $args
-	 * @return mixed
-	 */
-	public function args(array $args) {
-		return $args;
 	}
 
 }

@@ -33,12 +33,4 @@ abstract class ParentInterfaceType extends InterfaceType {
 	 */
 	abstract public function fields() : array;
 
-	/**
-	 * @param list<mixed> $args
-	 * @return mixed
-	 */
-	public function args(array $args) {
-		return $args;
-	}
-
 }

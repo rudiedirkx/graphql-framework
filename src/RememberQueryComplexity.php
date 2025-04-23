@@ -57,12 +57,4 @@ class RememberQueryComplexity extends QueryComplexity {
 		return $this->operationComplexities[$operationName] ?? 0;
 	}
 
-	// public function getLog() : string {
-	// 	$operationName = $this->getOperationName();
-	// 	$firstRootName = $this->operationFirstRootNames[$operationName] ?? '?';
-	// 	$roots = $this->operationRoots[$operationName] ?? 0;
-	// 	$warnings = $this->runtimeContext->getWarnings();
-	// 	return sprintf('%s,%d,%d,%d', $firstRootName, $roots, $this->getComplexity(), $warnings);
-	// }
-
 }

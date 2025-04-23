@@ -34,9 +34,10 @@ abstract class DeferredEager {
 	abstract protected function doLoadAll() : void;
 
 	/**
-	 * @param list<TModel> $args
+	 * @param TModel $source
+	 * @param list<mixed> $args
 	 */
-	public function __invoke(mixed $source, array $args, GraphQLContext $context) : Deferred {
+	public function __invoke($source, array $args, GraphQLContext $context) : Deferred {
 		$this->queue[] = $source;
 
 		return new Deferred(function() use ($source, $context) {

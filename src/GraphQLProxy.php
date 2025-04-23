@@ -12,4 +12,19 @@ abstract class GraphQLProxy {
 		};
 	}
 
+	/**
+	 * @param list<string> $names
+	 */
+	static public function properties(array $names) : Closure {
+		return function($source) use ($names) {
+			foreach ($names as $name) {
+				if (!is_null($child = $source->$name)) {
+					return $child;
+				}
+			}
+
+			return null;
+		};
+	}
+
 }

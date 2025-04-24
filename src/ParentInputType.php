@@ -3,6 +3,7 @@
 namespace rdx\graphql;
 
 use GraphQL\Type\Definition\InputObjectType;
+use GraphQL\Type\Definition\Type;
 
 abstract class ParentInputType extends InputObjectType {
 
@@ -15,7 +16,7 @@ abstract class ParentInputType extends InputObjectType {
 	}
 
 	/**
-	 * @return array<string, AssocArray>
+	 * @return array<string, Type|AssocArray>
 	 */
 	abstract public function fields() : array;
 

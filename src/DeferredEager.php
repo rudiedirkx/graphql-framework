@@ -2,7 +2,6 @@
 
 namespace rdx\graphql;
 
-use Closure;
 use GraphQL\Deferred;
 
 /**

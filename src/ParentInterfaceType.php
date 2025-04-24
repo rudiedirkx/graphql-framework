@@ -4,6 +4,7 @@ namespace rdx\graphql;
 
 use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Definition\Type;
 use InvalidArgumentException;
 use ReflectionClass;
 
@@ -29,7 +30,7 @@ abstract class ParentInterfaceType extends InterfaceType {
 	}
 
 	/**
-	 * @return array<string, array<string, mixed>>
+	 * @return array<string, Type|AssocArray>
 	 */
 	abstract public function fields() : array;
 

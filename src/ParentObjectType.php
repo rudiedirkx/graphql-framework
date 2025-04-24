@@ -2,10 +2,9 @@
 
 namespace rdx\graphql;
 
-use GraphQL\Type\Definition\FieldDefinition;
 use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\Definition\WrappingType;
+use GraphQL\Type\Definition\Type;
 
 abstract class ParentObjectType extends ObjectType {
 
@@ -19,7 +18,7 @@ abstract class ParentObjectType extends ObjectType {
 	}
 
 	/**
-	 * @return array<string, array<string, mixed>>
+	 * @return array<string, Type|AssocArray>
 	 */
 	abstract public function fields() : array;
 

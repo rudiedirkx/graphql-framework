@@ -23,13 +23,16 @@ class DeferredAnything {
 		$this->queue = [];
 	}
 
-	public function __invoke(mixed $source) : Deferred {
+	/**
+	 * @param AssocArray $args
+	 */
+	public function __invoke(mixed $source, array $args, GraphQLContext $context) : Deferred {
 		$this->queue[] = $source;
 
-		return new Deferred(function() use ($source) {
+		return new Deferred(function() use ($source, $context) {
 			$this->loadAll();
 
-			return call_user_func($this->return, $source);
+			return call_user_func($this->return, $source, $context);
 		});
 	}
 }

@@ -19,4 +19,16 @@ abstract class ParentInputType extends InputObjectType {
 	 */
 	abstract public function fields() : array;
 
+	/**
+	 * @param AssocArray $args
+	 */
+	public function argsMapper(array $args) : mixed {
+		return $args;
+	}
+
+	#[\Override]
+	public function parseValue(array $value) {
+		return $this->argsMapper($value);
+	}
+
 }

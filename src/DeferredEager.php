@@ -15,18 +15,12 @@ abstract class DeferredEager {
 
 	public function __construct(
 		protected string $field,
-		protected ?Closure $loadEager = null,
 	) {}
 
 	protected function loadAll(GraphQLContext $context) : void {
 		if (count($this->queue) == 0) return;
 
-		if ($this->loadEager) {
-			call_user_func($this->loadEager, $this, $context);
-		}
-		else {
-			$this->doLoadAll();
-		}
+		$this->doLoadAll();
 
 		$this->queue = [];
 	}

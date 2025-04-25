@@ -12,8 +12,8 @@ class RememberQueryComplexity extends QueryComplexity {
 
 	/** @var array<string, int> */
 	protected array $operationRoots = [];
-	/** @var array<string, string> */
-	protected array $operationFirstRootNames = [];
+	/** @var array<string, list<string>> */
+	protected array $operationRootNames = [];
 	/** @var array<string, int> */
 	protected array $operationComplexities = [];
 
@@ -34,9 +34,10 @@ class RememberQueryComplexity extends QueryComplexity {
 
 			$operationName = $operationDefinition->name->value ?? '';
 
-			$this->operationRoots[$operationName] = count($operationDefinition->selectionSet->selections);
-			assert($operationDefinition->selectionSet->selections[0] instanceof FieldNode);
-			$this->operationFirstRootNames[$operationName] = $operationDefinition->selectionSet->selections[0]->name->value;
+			/** @var list<FieldNode> $roots */
+			$roots = array_values(iterator_to_array($operationDefinition->selectionSet->selections));
+			$this->operationRoots[$operationName] = count($roots);
+			$this->operationRootNames[$operationName] = array_map(fn(FieldNode $root) => $root->name->value, $roots);
 
 			$complexity = $this->fieldComplexity($operationDefinition->selectionSet);
 			$this->operationComplexities[$operationName] = $complexity;

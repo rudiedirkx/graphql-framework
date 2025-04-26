@@ -10,6 +10,9 @@ abstract class GraphQLFactory {
 	/** @var array<class-string, Type> */
 	static protected array $types = [];
 
+	/** @var array<class-string, ParentField> */
+	static protected array $fields = [];
+
 	/**
 	 * @template TType of Type
 	 * @param class-string<TType> $class
@@ -20,11 +23,16 @@ abstract class GraphQLFactory {
 	}
 
 	/**
-	 * @param class-string<ParentField> $class
+	 * @param class-string<ParentField>|ParentField $field
 	 * @return AssocArray
 	 */
-	static public function field(string $class) : array {
-		return $class::buildConfig();
+	static public function field(string|ParentField $field) : array {
+		if (is_string($field)) {
+			self::$fields[$field] ??= new $field;
+			$field = self::$fields[$field];
+		}
+
+		return $field->buildConfig();
 	}
 
 	/**

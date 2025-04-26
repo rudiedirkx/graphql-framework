@@ -11,43 +11,43 @@ abstract class ParentField {
 	/**
 	 * @return AssocArray
 	 */
-	static public function buildConfig() : array {
-		if (!is_callable([$class = get_called_class(), 'resolve'])) {
-			throw new RuntimeException(sprintf('Field class %s is missing a resolve() method.', $class));
+	public function buildConfig() : array {
+		if (!is_callable([$this, 'resolve'])) {
+			throw new RuntimeException(sprintf('Field class %s is missing a resolve() method.', get_class($this)));
 		}
 
 		return [
-			'type' => static::type(),
-			'description' => static::description(),
-			'args' => static::args(),
-			'argsMapper' => static::argsMapper(...),
-			'resolve' => static::resolve(...), // @phpstan-ignore staticMethod.notFound
+			'type' => $this->type(),
+			'description' => $this->description(),
+			'args' => $this->args(),
+			'argsMapper' => $this->argsMapper(...),
+			'resolve' => $this->resolve(...), // @phpstan-ignore callable.nonNativeMethod
 		];
 	}
 
-	abstract static public function type() : Type;
+	abstract public function type() : Type;
 
-	// static public function resolve(mixed $source, array $args, GraphQLContext $context, ResolveInfo $info) : mixed;
+	// public function resolve(mixed $source, array $args, GraphQLContext $context, ResolveInfo $info) : mixed;
 
 	/**
 	 * @param AssocArray $args
 	 */
-	static public function argsMapper(array $args) : mixed {
+	public function argsMapper(array $args) : mixed {
 		return $args;
 	}
 
-	static public function description() : ?string {
+	public function description() : ?string {
 		return null;
 	}
 
-	static public function deprecationReason() : ?string {
+	public function deprecationReason() : ?string {
 		return null;
 	}
 
 	/**
 	 * @return array<string, Type|array{type: Type}>
 	 */
-	static public function args() : array {
+	public function args() : array {
 		return [];
 	}
 

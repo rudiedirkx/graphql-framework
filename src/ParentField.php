@@ -12,17 +12,21 @@ abstract class ParentField {
 	 * @return AssocArray
 	 */
 	public function buildConfig() : array {
-		if (!is_callable([$this, 'resolve'])) {
-			throw new RuntimeException(sprintf('Field class %s is missing a resolve() method.', get_class($this)));
-		}
-
 		return [
 			'type' => $this->type(),
 			'description' => $this->description(),
 			'args' => $this->args(),
 			'argsMapper' => $this->argsMapper(...),
-			'resolve' => $this->resolve(...), // @phpstan-ignore callable.nonNativeMethod
+			'resolve' => $this->getResolver(),
 		];
+	}
+
+	protected function getResolver() : callable {
+		if (!is_callable([$this, 'resolve'])) {
+			throw new RuntimeException(sprintf('Field class %s is missing a resolve() method.', get_class($this)));
+		}
+
+		return $this->resolve(...); // @phpstan-ignore callable.nonNativeMethod
 	}
 
 	abstract public function type() : Type;

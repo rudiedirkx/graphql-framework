@@ -10,6 +10,10 @@ class DeferredAnything {
 	/** @var list<mixed> */
 	public array $queue = [];
 
+	/**
+	 * @param (Closure(list<mixed>): void) $load
+	 * @param (Closure(mixed, GraphQLContext): mixed) $return
+	 */
 	public function __construct(
 		protected Closure $load,
 		protected Closure $return,

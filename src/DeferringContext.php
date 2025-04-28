@@ -6,8 +6,7 @@ class DeferringContext {
 
 	/** @var list<mixed> */
 	public array $queue = [];
-	/** @var AssocArray */
-	public array $cache = [];
+	public mixed $cache = [];
 
 	/**
 	 * @param AssocArray $args

@@ -12,7 +12,7 @@ use RuntimeException;
  * @template TContext of GraphQLContext
  * @template TComplexity of RememberQueryComplexity = RememberQueryComplexity
  *
- * @phpstan-type Input array{query: string, variables?: AssocArray, operationName?: string}
+ * @phpstan-type Input array{query: string, variables?: ?AssocArray, operationName?: ?string}
  * @phpstan-type Output array{data: AssocArray, extensions: AssocArray}
  */
 abstract class GraphQLHandler {

@@ -8,6 +8,9 @@ use GraphQL\Language\AST\OperationDefinitionNode;
 use GraphQL\Validator\QueryValidationContext;
 use GraphQL\Validator\Rules\QueryComplexity;
 
+/**
+ * @template TContext of GraphQLContext = GraphQLContext
+ */
 class RememberQueryComplexity extends QueryComplexity {
 
 	/** @var array<string, int> */
@@ -17,6 +20,9 @@ class RememberQueryComplexity extends QueryComplexity {
 	/** @var array<string, int> */
 	protected array $operationComplexities = [];
 
+	/**
+	 * @param TContext $runtimeContext
+	 */
 	public function __construct(
 		protected GraphQLContext $runtimeContext,
 		protected ?string $operationName,

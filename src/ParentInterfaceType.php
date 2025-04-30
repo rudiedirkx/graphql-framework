@@ -6,7 +6,6 @@ use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use InvalidArgumentException;
-use ReflectionClass;
 
 abstract class ParentInterfaceType extends InterfaceType {
 

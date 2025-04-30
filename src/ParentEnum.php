@@ -35,10 +35,6 @@ abstract class ParentEnum extends EnumType {
 		return $values;
 	}
 
-	protected function inferName() : string {
-		return preg_replace('#Enum$#', '', parent::inferName());
-	}
-
 	/**
 	 * @return array<string, string|PartialEnumValueConfig>
 	 */

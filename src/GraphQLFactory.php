@@ -3,11 +3,12 @@
 namespace rdx\graphql;
 
 use GraphQL\Type\Definition\ListOfType;
+use GraphQL\Type\Definition\NamedType;
 use GraphQL\Type\Definition\Type;
 
 abstract class GraphQLFactory {
 
-	/** @var array<class-string, Type> */
+	/** @var array<class-string<Type>, Type> */
 	static protected array $types = [];
 
 	/** @var array<class-string, ParentField> */
@@ -15,11 +16,11 @@ abstract class GraphQLFactory {
 
 	/**
 	 * @template TType of Type
-	 * @param class-string<TType> $class
-	 * @return TType
+	 * @param class-string<TType>&class-string<NamedType> $class
+	 * @return TType&NamedType
 	 */
 	static public function type(string $class) : Type {
-		return self::$types[$class] ??= new $class;
+		return self::$types[$class] ??= new $class; // @phpstan-ignore return.type
 	}
 
 	/**
@@ -37,7 +38,7 @@ abstract class GraphQLFactory {
 
 	/**
 	 * @template TType of Type
-	 * @param TType|class-string<TType> $type
+	 * @param (TType&NamedType)|(class-string<TType>&class-string<NamedType>) $type
 	 * @return ListOfType<TType>
 	 */
 	static public function listOf(string|Type $type) {

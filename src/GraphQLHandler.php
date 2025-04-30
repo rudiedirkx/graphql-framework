@@ -6,6 +6,7 @@ use GraphQL\Error\DebugFlag;
 use GraphQL\GraphQL;
 use GraphQL\Type\Schema;
 use GraphQL\Validator\Rules\ValidationRule;
+use ReflectionClass;
 use RuntimeException;
 
 /**
@@ -55,24 +56,27 @@ abstract class GraphQLHandler {
 		$debugFlags = $debug ? DebugFlag::INCLUDE_DEBUG_MESSAGE | DebugFlag::INCLUDE_TRACE : 0;
 
 		$this->result = GraphQL::executeQuery(
-			$schema,
-			$this->input['query'],
-			null,
-			$this->context,
-			$this->input['variables'] ?? [],
-			$this->input['operationName'] ?? null,
-			null,
-			$validationRules,
+			schema: $schema,
+			source: $this->input['query'],
+			contextValue: $this->context,
+			variableValues: $this->input['variables'] ?? [],
+			operationName: $this->input['operationName'] ?? null,
+			validationRules: $validationRules,
 		)->toArray($debugFlags);
 
-		$this->result += $this->context->getExtensions();
+		$this->result = $this->context->getExtensions() + $this->result;
 		$this->result['extensions']['complexity'] = $this->complexity->getComplexity();
 
 		$_mem2 = round((memory_get_peak_usage() - $_mem2) / 1e6, 1);
 		$_time2 = round((hrtime(true) - $_time2) / 1e6);
 
 		if ( $debug ) {
-			$this->result = compact('_time1', '_mem1', '_time2', '_mem2') + $this->result + [
+			$reflClass = new ReflectionClass($schema);
+			$reflProperty = $reflClass->getProperty('resolvedTypes');
+			$loadedTypes = $reflProperty->getValue($schema);
+			$_types = count($loadedTypes);
+
+			$this->result = compact('_time1', '_mem1', '_time2', '_mem2', '_types') + $this->result + [
 				'_queries' => $this->getDebugQueries(),
 			];
 		}

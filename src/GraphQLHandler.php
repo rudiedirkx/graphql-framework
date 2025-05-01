@@ -55,7 +55,7 @@ abstract class GraphQLHandler {
 		$debug = $this->isDebug();
 		$debugFlags = $debug ? DebugFlag::INCLUDE_DEBUG_MESSAGE | DebugFlag::INCLUDE_TRACE : 0;
 
-		$this->result = GraphQL::executeQuery(
+		$result = GraphQL::executeQuery(
 			schema: $schema,
 			source: $this->input['query'],
 			contextValue: $this->context,
@@ -64,8 +64,11 @@ abstract class GraphQLHandler {
 			validationRules: $validationRules,
 		)->toArray($debugFlags);
 
-		$this->result = $this->context->getExtensions() + $this->result;
-		$this->result['extensions']['complexity'] = $this->complexity->getComplexity();
+		$this->result = [
+			'extensions' => $this->context->getExtensions() + [
+				'complexity' => $this->complexity->getComplexity(),
+			],
+		] + $result;
 
 		$_mem2 = round((memory_get_peak_usage() - $_mem2) / 1e6, 1);
 		$_time2 = round((hrtime(true) - $_time2) / 1e6);

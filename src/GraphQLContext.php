@@ -23,9 +23,7 @@ class GraphQLContext {
 	public function getExtensions() : array {
 		if (count($this->warnings)) {
 			return [
-				'extensions' => [
-					'warnings' => array_map(fn(string $message) => compact('message'), $this->warnings),
-				],
+				'warnings' => array_map(fn(string $message) => compact('message'), $this->warnings),
 			];
 		}
 

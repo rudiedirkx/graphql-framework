@@ -90,6 +90,14 @@ abstract class GraphQLHandler {
 		return $this->result;
 	}
 
+	protected function getNumErrors() : int {
+		return count($this->result['errors'] ?? []);
+	}
+
+	protected function getNumWarnings() : int {
+		return count($this->result['extensions']['warnings'] ?? []);
+	}
+
 	protected function makeComplexity() : RememberQueryComplexity {
 		return new RememberQueryComplexity($this->context, $this->input['operationName'] ?? null);
 	}

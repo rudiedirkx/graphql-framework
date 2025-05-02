@@ -14,9 +14,11 @@
             "email": "github@hotblocks.nl"
         }
     ],
+    "require": {
+        "webonyx/graphql-php": "^15.20"
+    },
     "require-dev": {
         "phpstan/phpstan": "^2.1",
-        "friendsofphp/php-cs-fixer": "^3.75",
-        "webonyx/graphql-php": "^15.20"
+        "friendsofphp/php-cs-fixer": "^3.75"
     }
 }

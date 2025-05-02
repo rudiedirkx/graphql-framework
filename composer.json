@@ -2,7 +2,6 @@
     "name": "rdx/graphql-framework",
     "description": "GraphQL framework layer on top of webonyx/graphql-php",
     "type": "library",
-    "require": {},
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -17,6 +16,7 @@
     ],
     "require-dev": {
         "phpstan/phpstan": "^2.1",
-        "friendsofphp/php-cs-fixer": "^3.75"
+        "friendsofphp/php-cs-fixer": "^3.75",
+        "webonyx/graphql-php": "^15.20"
     }
 }

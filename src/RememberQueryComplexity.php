@@ -51,12 +51,25 @@ class RememberQueryComplexity extends QueryComplexity {
 		return $visitor;
 	}
 
-	protected function getOperationName() : string {
+	public function getOperationName() : string {
 		if (!$this->operationName && count($this->operationComplexities) == 1) {
 			return key($this->operationComplexities);
 		}
 
 		return $this->operationName ?? '';
+	}
+
+	/**
+	 * @return null|list<string>
+	 */
+	public function getOperationRootNames() : ?array {
+		$operationName = $this->getOperationName();
+		return $this->operationRootNames[$operationName] ?? null;
+	}
+
+	public function getOperationRoots() : ?int {
+		$operationName = $this->getOperationName();
+		return $this->operationRoots[$operationName] ?? null;
 	}
 
 	public function getComplexity() : int {

@@ -3,6 +3,7 @@
 namespace rdx\graphql;
 
 use GraphQL\Error\DebugFlag;
+use GraphQL\Error\Error;
 use GraphQL\GraphQL;
 use GraphQL\Type\Schema;
 use GraphQL\Validator\Rules\ValidationRule;
@@ -53,15 +54,16 @@ abstract class GraphQLHandler {
 		$debug = $this->isDebug();
 		$debugFlags = $debug ? DebugFlag::INCLUDE_DEBUG_MESSAGE | DebugFlag::INCLUDE_TRACE : 0;
 
-		$result = GraphQL::executeQuery(
+		$executionResult = GraphQL::executeQuery(
 			schema: $schema,
 			source: $this->input['query'],
 			contextValue: $this->context,
 			variableValues: $this->input['variables'] ?? [],
 			operationName: $this->input['operationName'] ?? null,
 			validationRules: $validationRules,
-		)->toArray($debugFlags);
+		);
 
+		$result = $executionResult->toArray($debugFlags);
 		$this->result = [
 			'extensions' => $this->context->getExtensions() + [
 				'complexity' => $this->complexity->getComplexity(),
@@ -70,6 +72,10 @@ abstract class GraphQLHandler {
 
 		$_mem2 = round((memory_get_peak_usage() - $_mem2) / 1e6, 1);
 		$_time2 = round((hrtime(true) - $_time2) / 1e6);
+
+		$serverErrors = array_values(array_filter($executionResult->errors, function(Error $ex) {
+			return !$ex->isClientSafe();
+		}));
 
 		if ( $debug ) {
 			$reflClass = new ReflectionClass($schema);
@@ -80,6 +86,10 @@ abstract class GraphQLHandler {
 			$this->result = compact('_time1', '_mem1', '_time2', '_mem2', '_types') + $this->result + [
 				'_queries' => $this->getDebugQueries(),
 			];
+		}
+
+		if (!$debug && count($serverErrors)) {
+			$this->handleExceptions($serverErrors);
 		}
 	}
 
@@ -148,6 +158,13 @@ abstract class GraphQLHandler {
 	 * @return list<string>
 	 */
 	abstract protected function getDebugQueries() : array;
+
+	/**
+	 * @param non-empty-list<Error> $errors
+	 */
+	protected function handleExceptions(array $errors) : void {
+		// Throw for real, or log, or ignore
+	}
 
 	/**
 	 * @return array<class-string<ValidationRule>, ValidationRule>

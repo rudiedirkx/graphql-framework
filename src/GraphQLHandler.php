@@ -35,16 +35,10 @@ abstract class GraphQLHandler {
 	public function execute() : void {
 		$this->input ??= $this->makeInput();
 
-		$_mem1 = memory_get_peak_usage();
-		$_time1 = hrtime(true);
+		$_mem = memory_get_peak_usage();
+		$_totalTime = hrtime(true);
 
 		$schema = $this->makeSchema();
-
-		$_mem1 = round((memory_get_peak_usage() - $_mem1) / 1e6, 1);
-		$_time1 = round((hrtime(true) - $_time1) / 1e6);
-
-		$_mem2 = memory_get_peak_usage();
-		$_time2 = hrtime(true);
 
 		$this->complexity = $this->makeComplexity();
 
@@ -70,20 +64,24 @@ abstract class GraphQLHandler {
 			],
 		] + $result;
 
-		$_mem2 = round((memory_get_peak_usage() - $_mem2) / 1e6, 1);
-		$_time2 = round((hrtime(true) - $_time2) / 1e6);
+		$_mem = round((memory_get_peak_usage() - $_mem) / 1e6, 1);
+		$_totalTime = round((hrtime(true) - $_totalTime) / 1e6);
 
 		$serverErrors = array_values(array_filter($executionResult->errors, function(Error $ex) {
 			return !$ex->isClientSafe();
 		}));
 
 		if ( $debug ) {
-			$reflClass = new ReflectionClass($schema);
-			$reflProperty = $reflClass->getProperty('resolvedTypes');
-			$loadedTypes = $reflProperty->getValue($schema);
-			$_types = count($loadedTypes);
+// $reflClass = new ReflectionClass($schema);
+// $reflProperty = $reflClass->getProperty('resolvedTypes');
+// $loadedTypes = $reflProperty->getValue($schema);
+// dump(array_keys($loadedTypes));
+// dump(array_keys(GraphQLFactory::$typeTimings));
 
-			$this->result = compact('_time1', '_mem1', '_time2', '_mem2', '_types') + $this->result + [
+			$_types = count(GraphQLFactory::$typeTimings);
+			$_typesTime = array_sum(GraphQLFactory::$typeTimings);
+
+			$this->result = compact('_totalTime', '_typesTime', '_mem', '_types') + $this->result + [
 				'_queries' => $this->getDebugQueries(),
 			];
 		}

@@ -2,6 +2,7 @@
 
 namespace rdx\graphql;
 
+use Closure;
 use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
@@ -18,7 +19,7 @@ abstract class ParentObjectType extends ObjectType {
 	}
 
 	/**
-	 * @return array<string, Type|AssocArray>
+	 * @return array<string, Type|AssocArray|(Closure(): AssocArray)>
 	 */
 	abstract public function fields() : array;
 

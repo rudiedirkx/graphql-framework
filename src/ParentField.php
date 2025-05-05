@@ -2,6 +2,7 @@
 
 namespace rdx\graphql;
 
+use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use RuntimeException;
@@ -9,10 +10,10 @@ use RuntimeException;
 abstract class ParentField {
 
 	/**
-	 * @return AssocArray
+	 * @return (Closure(): AssocArray)
 	 */
-	public function buildConfig() : array {
-		return [
+	public function buildConfig() : Closure {
+		return fn() => [
 			'type' => $this->type(),
 			'description' => $this->description(),
 			'args' => $this->args(),

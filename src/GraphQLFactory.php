@@ -2,6 +2,7 @@
 
 namespace rdx\graphql;
 
+use Closure;
 use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\NamedType;
 use GraphQL\Type\Definition\Type;
@@ -10,6 +11,9 @@ abstract class GraphQLFactory {
 
 	/** @var array<class-string<Type>, Type> */
 	static protected array $types = [];
+
+	/** @var array<class-string<Type>, float> */
+	static public array $typeTimings = [];
 
 	/** @var array<class-string, ParentField> */
 	static protected array $fields = [];
@@ -20,14 +24,21 @@ abstract class GraphQLFactory {
 	 * @return TType&NamedType
 	 */
 	static public function type(string $class) : Type {
-		return self::$types[$class] ??= new $class; // @phpstan-ignore return.type
+		if (isset(self::$types[$class])) return self::$types[$class]; // @phpstan-ignore return.type
+
+		$t = hrtime(true);
+		self::$types[$class] = new $class;
+		$t = hrtime(true) - $t;
+		self::$typeTimings[$class] = $t / 1e6;
+
+		return self::$types[$class];
 	}
 
 	/**
 	 * @param class-string<ParentField>|ParentField $field
-	 * @return AssocArray
+	 * @return (Closure(): AssocArray)
 	 */
-	static public function field(string|ParentField $field) : array {
+	static public function field(string|ParentField $field) : Closure {
 		if (is_string($field)) {
 			self::$fields[$field] ??= new $field;
 			$field = self::$fields[$field];

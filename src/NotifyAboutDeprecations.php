@@ -58,7 +58,7 @@ class NotifyAboutDeprecations extends ValidationRule {
 			}
 			if (!($argumentType instanceof EnumType)) return;
 			$enumValue = $argumentType->getValue($node->value);
-			if ($enumValue->deprecationReason) {
+			if ($enumValue && $enumValue->deprecationReason) {
 				$this->context->addWarning(sprintf("Enum value %s.%s is deprecated: %s", $argumentType->name, $enumValue->name, $enumValue->deprecationReason));
 			}
 		};

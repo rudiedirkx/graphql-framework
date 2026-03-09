@@ -12,6 +12,13 @@ abstract class GraphQLProxy {
 		};
 	}
 
+	static public function nullableProperty(string $name) : Closure {
+		return function($source) use ($name) {
+			$value = $source->$name;
+			return $value === '' ? null : $value;
+		};
+	}
+
 	/**
 	 * @param list<string> $names
 	 */

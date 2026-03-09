@@ -12,7 +12,7 @@ class DateType extends ScalarType {
 	public ?string $description = 'String formatted like YYYY-MM-DD';
 
 	public function serialize($value) {
-		$format = 'Y-m-d H:i:s';
+		$format = 'Y-m-d';
 
 		if ($value instanceof Carbon) {
 			return $value->format($format);
@@ -22,7 +22,7 @@ class DateType extends ScalarType {
 			return date($format, $value);
 		}
 
-		return $value;
+		return substr($value, 0, 10);
 	}
 
 	public function parseValue($value) {

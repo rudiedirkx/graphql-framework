@@ -52,12 +52,16 @@ abstract class GraphQLFactory {
 	 * @param (TType&NamedType)|(class-string<TType>&class-string<NamedType>) $type
 	 * @return ListOfType<TType>
 	 */
-	static public function listOf(string|Type $type) {
+	static public function listOf(string|Type $type, bool $nullable = false) {
 		if (is_string($type)) {
 			$type = static::type($type);
 		}
 
-		return Type::nonNull(Type::listOf(Type::nonNull($type))); // @phpstan-ignore return.type
+		$type = Type::listOf(Type::nonNull($type));
+		if (!$nullable) {
+			$type = Type::nonNull($type);
+		}
+		return $type;
 	}
 
 }

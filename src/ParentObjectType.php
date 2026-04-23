@@ -11,11 +11,16 @@ abstract class ParentObjectType extends ObjectType {
 
 	public function __construct() {
 		$config = [];
+		$config['description'] = $this->description();
 		$config['fields'] = function() {
 			return $this->fields();
 		};
 		$config['interfaces'] = $this->interfaces();
 		parent::__construct($config);
+	}
+
+	public function description() : ?string {
+		return null;
 	}
 
 	/**

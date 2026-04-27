@@ -36,9 +36,9 @@ abstract class GraphQLFactory {
 
 	/**
 	 * @param class-string<ParentField>|ParentField $field
-	 * @return (Closure(): AssocArray)
+	 * @return AssocArray
 	 */
-	static public function field(string|ParentField $field) : Closure {
+	static public function field(string|ParentField $field) : array {
 		if (is_string($field)) {
 			self::$fields[$field] ??= new $field;
 			$field = self::$fields[$field];

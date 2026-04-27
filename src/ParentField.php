@@ -10,10 +10,10 @@ use RuntimeException;
 abstract class ParentField {
 
 	/**
-	 * @return (Closure(): AssocArray)
+	 * @return AssocArray
 	 */
-	public function buildConfig() : Closure {
-		return fn() => [
+	public function buildConfig() : array {
+		return [
 			'type' => $this->type(),
 			'description' => $this->description(),
 			'args' => $this->args(),

@@ -171,6 +171,7 @@ abstract class GraphQLHandler {
 		return [
 			NotifyAboutDeprecations::class => new NotifyAboutDeprecations($this->context),
 			RememberQueryComplexity::class => $this->complexity,
+			FieldAccessRule::class => new FieldAccessRule(),
 		];
 	}
 

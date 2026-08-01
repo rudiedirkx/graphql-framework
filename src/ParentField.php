@@ -19,6 +19,7 @@ abstract class ParentField {
 			'args' => $this->args(),
 			'argsMapper' => $this->argsMapper(...),
 			'resolve' => $this->getResolver(),
+			'access' => $this->access(),
 		];
 	}
 
@@ -39,6 +40,10 @@ abstract class ParentField {
 	 */
 	public function argsMapper(array $args) : mixed {
 		return $args;
+	}
+
+	public function access() : bool {
+		return true;
 	}
 
 	public function description() : ?string {
